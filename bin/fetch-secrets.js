@@ -61,7 +61,7 @@ let secrets;
 try {
   secrets = JSON.parse(fs.readFileSync(secretsFile, "utf8"));
 } catch (err) {
-  console.error(❌ Failed to read ${secretsFile}: ${err});
+  console.error(`❌ Failed to read ${secretsFile}: ${err}`);
   process.exit(1);
 }
 
