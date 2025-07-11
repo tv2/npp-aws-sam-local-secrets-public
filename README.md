@@ -5,4 +5,4 @@
 ## Usage
 
 ```bash
-npx @tv2/aws-secrets-to-env fetch-secrets secrets.json .env.local --region eu-central-1 --profile tv2-cms-dev
+npx @tv2/aws-secrets-to-env fetch-secrets local.secrets.json local.env.json --region eu-central-1 --profile tv2-cms-dev
