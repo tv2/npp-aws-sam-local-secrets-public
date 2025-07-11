@@ -9,10 +9,10 @@ const args = process.argv.slice(2);
 if (args.length < 2) {
   console.error(`
 Usage:
-  fetch-secrets <secrets.json> <output.env> [--region eu-central-1] [--profile tv2-cms-dev]
+  fetch-secrets <secrets.json> <output.json> [--region eu-central-1] [--profile tv2-cms-dev]
 
 Examples:
-  fetch-secrets secrets.json .env.local --region eu-central-1 --profile tv2-cms-dev
+  fetch-secrets secrets.json output.json --region eu-central-1 --profile tv2-cms-dev
 `);
   process.exit(1);
 }
@@ -50,7 +50,6 @@ if (!profile) {
 console.log(`Using AWS region: ${region}`);
 console.log(`Using AWS profile: ${profile}`);
 
-// Load AWS shared config from profile
 process.env.AWS_SDK_LOAD_CONFIG = "true";
 process.env.AWS_PROFILE = profile;
 
@@ -65,14 +64,13 @@ try {
   process.exit(1);
 }
 
-fs.writeFileSync(outputFile, "");
-
 // --- ✅ Fetch unique secrets ---
 const secretsById = new Map();
 Object.entries(secrets).forEach(([envVar, { SecretId }]) => {
   secretsById.set(SecretId, null);
 });
 
+// Actually fetch them
 for (const secretId of secretsById.keys()) {
   console.log(`🔑 Fetching ${secretId} ...`);
   try {
@@ -84,17 +82,21 @@ for (const secretId of secretsById.keys()) {
   }
 }
 
-// --- ✅ Map env vars & write output ---
+// --- ✅ Map env vars & build output ---
+const outputObject = { Parameters: {} };
+
 for (const [envVar, { SecretId, Key }] of Object.entries(secrets)) {
   const secretObject = secretsById.get(SecretId);
   const value = secretObject?.[Key];
 
   if (value === undefined) {
-    console.error(`Key '${Key}' not found in secret '${SecretId}'`);
+    console.error(`⚠️  Key '${Key}' not found in secret '${SecretId}'`);
     continue;
   }
 
-  fs.appendFileSync(outputFile, `${envVar}=${value}\n`);
+  outputObject.Parameters[envVar] = value;
 }
+
+fs.writeFileSync(outputFile, JSON.stringify(outputObject, null, 2));
 
 console.log(`✅ Secrets written to ${outputFile}`);
