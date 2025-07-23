@@ -6,11 +6,6 @@ if [ "$#" -lt 2 ]; then
   echo "
 Usage:
   fetch-secrets.sh <secrets.json> <output.json> [--region eu-central-1] [--profile tv2-cms-dev]
-
-  OR from remote:
-  gh api -H "Accept: application/vnd.github.v3.raw" \
-  /repos/tv2/my-private-repo/contents/bin/secrets.sh \
-  | bash -s -- local.secrets.json local.env.json --region eu-central-1 --profile tv2-cms-dev
 "
   exit 1
 fi
