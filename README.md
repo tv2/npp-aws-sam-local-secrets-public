@@ -10,7 +10,10 @@
 Before running the script, make sure you have:
 
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed and configured with the correct `--profile`.
-- [`jq`](https://stedolan.github.io/jq/) installed.
+- [`jq`](https://stedolan.github.io/jq/) installed. Install it via Homebrew:
+  ```bash
+  brew install jq
+  ```
 
 ---
 
