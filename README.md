@@ -19,7 +19,11 @@ You can also run the script directly from the remote repository:
 # Fetch secrets from remote repository and execute the script
 
 curl -sSL https://raw.githubusercontent.com/tv2/npp-aws-sam-local-secrets-public/main/bin/fetch-secrets.sh | bash -s -- <args>
+```
+Example:
 
+```bash
+# Fetch secrets and generate local.secrets.json and local.env.json
 curl -sSL https://raw.githubusercontent.com/tv2/npp-aws-sam-local-secrets-public/main/bin/fetch-secrets.sh \
   | bash -s -- local.secrets.json local.env.json --region eu-central-1 --profile tv2-cms-dev
 ```
