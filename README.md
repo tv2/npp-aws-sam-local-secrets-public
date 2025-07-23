@@ -1,5 +1,5 @@
 
-🔐 Fetch secrets from AWS Secrets Manager and generate a `.json` file — to use with AWS SAM for local development.
+# 🔐 Fetch secrets from AWS Secrets Manager and generate a `.json` file — to use with AWS SAM for local development.
 
 
 ---
