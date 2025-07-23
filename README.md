@@ -1,32 +1,47 @@
-# @tv2/aws-secrets-to-env
 
-🔐 Fetch secrets from AWS Secrets Manager and generate a .json file, to use with AWS SAM for local development.
+🔐 Fetch secrets from AWS Secrets Manager and generate a `.json` file — to use with AWS SAM for local development.
 
-## Prerequisites
 
-- AWS CLI installed and configured
-- jq installed
+---
 
-## Usage
+## ✅ Prerequisites
 
+Before running the script, make sure you have:
+
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed and configured with the correct `--profile`.
+- [`jq`](https://stedolan.github.io/jq/) installed.
+
+---
+
+## 🚀 Usage
+Run the script locally:
+```bash
+bash bin/fetch-secrets.sh <secrets.json> <output.json> [--region eu-central-1] [--profile tv2-cms-dev]
 ```
-sh bin/fetch-secrets.sh <secrets.json> <output.json> [--region eu-central-1] [--profile tv2-cms-dev]
-```
 
-You can also run the script directly from the remote repository:
+## 🔗 Run directly from GitHub
+You can also run the script directly without cloning:
 
 ```bash
-# Fetch secrets from remote repository and execute the script
-
-curl -sSL https://raw.githubusercontent.com/tv2/npp-aws-sam-local-secrets-public/main/bin/fetch-secrets.sh | bash -s -- <args>
+curl -sSL https://raw.githubusercontent.com/tv2/npp-aws-sam-local-secrets-public/main/bin/fetch-secrets.sh | bash -s -- <secrets.json> <output.json> [--region ...] [--profile ...]
 ```
+
 Example:
-
 ```bash
-# Fetch secrets and generate local.secrets.json and local.env.json
+# Fetch secrets and generate local.env.json from local.secrets.json
 curl -sSL https://raw.githubusercontent.com/tv2/npp-aws-sam-local-secrets-public/main/bin/fetch-secrets.sh \
   | bash -s -- local.secrets.json local.env.json --region eu-central-1 --profile tv2-cms-dev
 ```
 
-<!-- ```bash
-npx @tv2/aws-secrets-to-env fetch-secrets local.secrets.json local.env.json --region eu-central-1 --profile tv2-cms-dev -->
+## 📂 Example secrets.json
+See example.secrets.json for the expected format of the input file.
+
+## ⚙️ Using with AWS SAM
+To use the generated secrets with AWS SAM, pass the output file using `--env-vars`:
+
+```bash
+sam local start-api --env-vars local.env.json
+```
+
+
+✅ That’s it — happy secret fetching!

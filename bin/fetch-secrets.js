@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+//  NOT IN USE AS WE SWITCHED TO BASH INSTEAD
+
 import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 import fs from "node:fs";
 

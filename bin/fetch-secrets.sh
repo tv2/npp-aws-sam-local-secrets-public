@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
-set -euo pipefail # Exit on error, undefined variable, or pipe failure
+set -euo pipefail
 
+# --- Check dependencies ---
+for cmd in aws jq; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "❌ Required command '$cmd' is not installed or not in PATH."
+    exit 1
+  fi
+done
+
+# --- Parse CLI args ---
 if [ "$#" -lt 2 ]; then
   echo "
 Usage:
@@ -55,10 +64,9 @@ if ! [ -f "$secrets_file" ]; then
   exit 1
 fi
 
-# --- ✅ Build output object ---
 output_json='{ "Parameters": {} }'
 
-jq -r 'to_entries[] | "\(.key)=\(.value | @json)"' "$secrets_file" | while IFS="=" read -r env_var secret_info; do
+while IFS="=" read -r env_var secret_info; do
   secret_id=$(echo "$secret_info" | jq -r '.SecretId')
   key=$(echo "$secret_info" | jq -r '.Key')
 
@@ -85,7 +93,7 @@ jq -r 'to_entries[] | "\(.key)=\(.value | @json)"' "$secrets_file" | while IFS="
 
   output_json=$(echo "$output_json" | jq --arg k "$env_var" --arg v "$value" '.Parameters[$k] = $v')
 
-done
+done < <(jq -r 'to_entries[] | "\(.key)=\(.value | @json)"' "$secrets_file")
 
 echo "$output_json" | jq '.' > "$output_file"
 
