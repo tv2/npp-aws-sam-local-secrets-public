@@ -43,6 +43,13 @@ To use the generated secrets with AWS SAM, pass the output file using `--env-var
 ```bash
 sam local start-api --env-vars local.env.json
 ```
-
+### 🔒 Security tip
+The generated secrets file (local.env.json) contains real secret values.
+Always add it to .gitignore so it’s never committed to Git!
+Example .gitignore:
+```
+# Local AWS secrets
+local.env.json
+```
 
 ✅ That’s it — happy secret fetching!
